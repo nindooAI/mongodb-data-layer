@@ -18,7 +18,7 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
   }
 
   protected async existsBy (query: Record<string, any>): Promise<boolean> {
-    return this.collection.count(query)
+    return this.collection.countDocuments(query)
       .then(count => count > 0)
   }
 
