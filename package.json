@@ -1,0 +1,35 @@
+{
+  "name": "@nindoo/mongodb-data-layer",
+  "version": "1.0.0",
+  "description": "Simple set of tools to help working with mongodb",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "build:clean": "npm run clean && npm run build",
+    "prepare": "npm run build:clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rjmunhoz/mongodb-data-layer.git"
+  },
+  "keywords": [
+    "mongodb",
+    "tools",
+    "data",
+    "toolkit"
+  ],
+  "author": "Rogério Munhoz <rogerio.j.munhoz@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/rjmunhoz/mongodb-data-layer/issues"
+  },
+  "homepage": "https://github.com/rjmunhoz/mongodb-data-layer#readme",
+  "dependencies": {
+    "@types/mongodb": "^3.1.28",
+    "mongodb": "^3.2.7"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}
