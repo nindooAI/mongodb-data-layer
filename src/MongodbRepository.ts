@@ -33,13 +33,13 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
   protected async create (entity: TEntity) {
     const payload = this.serialize(entity)
 
-    await this.collection.insert(payload)
+    await this.collection.insertOne(payload)
 
     return entity
   }
 
   protected async runPaginatedQuery (query: Record<string, any>, page = 0, size = 10): Promise<PaginatedQueryResult<TEntity>> {
-    const total = await this.collection.count(query)
+    const total = await this.collection.countDocuments(query)
 
     if (total === 0) {
       return { total: 0, count: 0, results: [] }
