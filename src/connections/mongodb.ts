@@ -18,7 +18,7 @@ const defaults = {
  * @param {string} mongoData.dbname Database name
  * @param {MongoClientOptions} mongoData.options Options to be proxied to the database
  */
-async function connect ({ uri, dbName, maximumConnectionAttempts, options = {} }: IMongoParams, attemptsMade = 0): Promise<Db> {
+async function connect ({ uri, dbName, maximumConnectionAttempts = 5, options = {} }: IMongoParams, attemptsMade = 0): Promise<Db> {
   try {
     const client = await MongoClient.connect(uri, { ...defaults, ...options })
     return client.db(dbName)
