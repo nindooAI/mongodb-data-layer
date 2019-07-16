@@ -4,25 +4,25 @@ import { SerializedEntity } from './structures/interfaces/SerializedEntity'
 import { PaginatedQueryResult } from './structures/interfaces/PaginatedQueryResult'
 
 export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntity extends SerializedEntity> {
-  constructor (private readonly collection: Collection) {}
+  constructor (private readonly collection: Collection) { }
 
   abstract serialize (entity: TEntity): TSerializedEntity
   abstract deserialize (data: TSerializedEntity): TEntity
 
-  protected async findOneBy(query: Record<string, any>): Promise<TEntity | null> {
+  protected async findOneBy (query: Record<string, any>): Promise<TEntity | null> {
     return this.collection.find(query)
       .limit(1)
       .toArray()
-      .then(([result]) => result)
-      .then(result => result ? this.deserialize(result) : null)
+      .then(([result]: any[]) => result)
+      .then((result: any) => result ? this.deserialize(result) : null)
   }
 
   protected async existsBy (query: Record<string, any>): Promise<boolean> {
     return this.collection.countDocuments(query)
-      .then(count => count > 0)
+      .then((count: number) => count > 0)
   }
 
-  protected async update (entity: TEntity) {
+  private async update (entity: TEntity) {
     const payload = this.serialize(entity)
 
     await this.collection.updateOne({ _id: entity.id }, { $set: payload })
@@ -49,10 +49,10 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
       .skip(page * size)
       .limit(size)
       .toArray()
-      .then(results => results.map(this.deserialize))
+      .then((results: any) => results.map(this.deserialize))
 
-      return { total, count: results.length, results }
-    }
+    return { total, count: results.length, results }
+  }
 
   public async findById (id: ObjectId | string): Promise<TEntity | null> {
     if (!ObjectId.isValid(id)) return null
