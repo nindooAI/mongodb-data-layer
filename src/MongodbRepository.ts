@@ -54,6 +54,20 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
     return { total, count: results.length, results }
   }
 
+  public async deleteById (id: ObjectId | string): Promise<boolean | null> {
+    if (!ObjectId.isValid(id)) return null
+
+    const result = await this.collection.deleteOne({ _id: id })
+
+    return !!result.result.ok
+  }
+
+  protected async deleteBy (query: any): Promise<boolean> {
+    const { result } = await this.collection.deleteMany(query)
+
+    return !!result.ok
+  }
+
   public async findById (id: ObjectId | string): Promise<TEntity | null> {
     if (!ObjectId.isValid(id)) return null
 
