@@ -57,7 +57,7 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
   public async deleteById (id: ObjectId | string): Promise<boolean | null> {
     if (!ObjectId.isValid(id)) return null
 
-    const result = await this.collection.deleteOne({ _id: id })
+    const result = await this.collection.deleteOne({ _id: new ObjectId(id) })
 
     return !!result.result.ok
   }
