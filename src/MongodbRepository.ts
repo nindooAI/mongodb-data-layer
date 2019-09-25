@@ -43,7 +43,7 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
     const from = page * size
 
     if (total === 0) {
-      return { total: 0, count: 0, results: [] }
+      return { total: 0, count: 0, results: [], range: { from: 0, to: 0 } }
     }
 
     const results = await this.collection.find(query)
@@ -51,7 +51,7 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
       .limit(size)
       .toArray()
       .then((results: any) => results.map(this.deserialize))
-    
+
     const to = from + results.length
 
     return { total, count: results.length, results, range: { from, to } }
