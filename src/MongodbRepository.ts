@@ -40,18 +40,21 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
 
   protected async runPaginatedQuery (query: Record<string, any>, page = 0, size = 10): Promise<PaginatedQueryResult<TEntity>> {
     const total = await this.collection.countDocuments(query)
+    const from = page * size
 
     if (total === 0) {
       return { total: 0, count: 0, results: [] }
     }
 
     const results = await this.collection.find(query)
-      .skip(page * size)
+      .skip(from)
       .limit(size)
       .toArray()
       .then((results: any) => results.map(this.deserialize))
+    
+    const to = from + results.length
 
-    return { total, count: results.length, results }
+    return { total, count: results.length, results, range: { from, to } }
   }
 
   public async deleteById (id: ObjectId | string): Promise<boolean | null> {
