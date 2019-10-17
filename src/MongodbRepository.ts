@@ -4,7 +4,7 @@ import { SerializedEntity } from './structures/interfaces/SerializedEntity'
 import { PaginatedQueryResult } from './structures/interfaces/PaginatedQueryResult'
 
 export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntity extends SerializedEntity> {
-  constructor (private readonly collection: Collection) { }
+  constructor (protected readonly collection: Collection) { }
 
   abstract serialize (entity: TEntity): TSerializedEntity
   abstract deserialize (data: TSerializedEntity): TEntity
