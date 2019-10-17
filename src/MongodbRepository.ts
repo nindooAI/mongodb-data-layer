@@ -17,6 +17,12 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
       .then((result: any) => result ? this.deserialize(result) : null)
   }
 
+  protected async unpaginatedSearch (query: Record<string, any>): Promise<TEntity[]> {
+    return this.collection.find(query)
+      .toArray()
+      .then((results: any) => results.map(this.deserialize))
+  }
+
   protected async existsBy (query: Record<string, any>): Promise<boolean> {
     return this.collection.countDocuments(query)
       .then((count: number) => count > 0)
