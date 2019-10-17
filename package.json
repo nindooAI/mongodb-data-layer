@@ -30,6 +30,6 @@
     "mongodb": "^3.2.7"
   },
   "files": [
-    "dist/**/*"
+    "dist/"
   ]
 }

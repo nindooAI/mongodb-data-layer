@@ -10,6 +10,10 @@ jobs:
         - npm install
         - npm run build:clean
     - stage: "Deploy"
+      script:
+        - npm install -g typescript
+        - npm install
+        - npm run build:clean
       deploy:
         provider: npm
         email: $NPM_EMAIL_ADDR
@@ -22,6 +26,6 @@ jobs:
 notifications:
   email:
     recipients:
-    - lucas@nindoo.ai
+      - lucas@nindoo.ai
     on_success: change
     on_failure: always
