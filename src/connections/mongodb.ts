@@ -1,13 +1,14 @@
-import { MongoClient, Db } from 'mongodb'
+import { MongoClient, Db, MongoClientOptions } from 'mongodb'
 import { ConnectionError } from './errors/ConnectionError'
 import { IMongoParams } from '../structures/interfaces/IMongoParams'
 
 /**
  * MongoClient default settings
  */
-const defaults = {
+const defaults: MongoClientOptions = {
   poolSize: 10,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 }
 
 /**
@@ -18,10 +19,10 @@ const defaults = {
  * @param {string} mongoData.dbname Database name
  * @param {MongoClientOptions} mongoData.options Options to be proxied to the database
  */
-async function connect ({ uri, dbName, maximumConnectionAttempts = 5, options = {} }: IMongoParams, attemptsMade = 0): Promise<Db> {
+async function connect ({ uri, dbName, maximumConnectionAttempts = 5, options = {} }: IMongoParams, attemptsMade = 0): Promise<MongoClient> {
   try {
     const client = await MongoClient.connect(uri, { ...defaults, ...options })
-    return client.db(dbName)
+    return client
   } catch (err) {
     if (attemptsMade >= maximumConnectionAttempts) throw new ConnectionError(`Mongodb connection failed after ${attemptsMade} attempts with message: ${err.message}`)
     return connect({ uri, dbName, maximumConnectionAttempts, options }, attemptsMade + 1)
@@ -35,5 +36,17 @@ async function connect ({ uri, dbName, maximumConnectionAttempts = 5, options = 
  * @param databaseEnvs.mongodb {IMongoParams} Environment variables for mongoDB
  */
 export async function createConnection (config: IMongoParams): Promise<Db> {
-  return connect(config)
+  const client = await connect(config)
+  return client.db(config.dbName)
+}
+
+/**
+ * Creates a mongoDB Client
+ *
+ * @param databaseEnvs {Object} Environment variables for database
+ * @param databaseEnvs.mongodb {IMongoParams} Environment variables for mongoDB
+ */
+export async function createClient (config: IMongoParams): Promise<MongoClient> {
+  const client = await connect(config)
+  return client
 }

@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/rjmunhoz/mongodb-data-layer#readme",
   "dependencies": {
-    "@types/mongodb": "^3.1.28",
-    "mongodb": "^3.2.7"
+    "@types/mongodb": "^3.3.8",
+    "mongodb": "^3.3.3"
   },
   "files": [
     "dist/"

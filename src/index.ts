@@ -1,5 +1,5 @@
 import { MongodbRepository } from './MongodbRepository'
-import { createConnection } from './connections/mongodb'
+import { createConnection, createClient } from './connections/mongodb'
 import { ConnectionError } from './connections/errors/ConnectionError'
 
 // Repository
@@ -18,6 +18,7 @@ export * from './connections/errors/ConnectionError'
 const lib = {
   MongodbRepository,
   createConnection,
+  createClient,
   ConnectionError
 }
 
