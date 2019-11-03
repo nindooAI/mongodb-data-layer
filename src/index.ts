@@ -6,9 +6,7 @@ import { ConnectionError } from './connections/errors/ConnectionError'
 export * from './MongodbRepository'
 
 // Interfaces
-export * from './structures/interfaces/Entity'
 export * from './structures/interfaces/IMongoParams'
-export * from './structures/interfaces/SerializedEntity'
 export * from './structures/interfaces/PaginatedQueryResult'
 
 // Connection

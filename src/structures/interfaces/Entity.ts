@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
 
 export interface Entity {
-  id: ObjectId
+  _id: ObjectId
 }

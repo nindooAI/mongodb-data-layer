@@ -1,26 +1,21 @@
 import { Collection, ObjectId } from 'mongodb'
 import { Entity } from './structures/interfaces/Entity'
-import { SerializedEntity } from './structures/interfaces/SerializedEntity'
 import { PaginatedQueryResult } from './structures/interfaces/PaginatedQueryResult'
 
-export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntity extends SerializedEntity> {
+export abstract class MongodbRepository<TEntity extends Entity> {
   constructor (protected readonly collection: Collection) { }
 
-  abstract serialize (entity: TEntity): TSerializedEntity
-  abstract deserialize (data: TSerializedEntity): TEntity
-
   protected async findOneBy (query: Record<string, any>): Promise<TEntity | null> {
-    return this.collection.find(query)
+    return this.collection.find<TEntity>(query)
       .limit(1)
       .toArray()
-      .then(([result]: any[]) => result)
-      .then((result: any) => result ? this.deserialize(result) : null)
+      .then(([result]) => result)
+      .then((result) => result || null)
   }
 
   protected async unpaginatedSearch (query: Record<string, any>): Promise<TEntity[]> {
-    return this.collection.find(query)
+    return this.collection.find<TEntity>(query)
       .toArray()
-      .then((results: any) => results.map(this.deserialize))
   }
 
   protected async existsBy (query: Record<string, any>): Promise<boolean> {
@@ -28,18 +23,15 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
       .then((count: number) => count > 0)
   }
 
-  private async update (entity: TEntity) {
-    const payload = this.serialize(entity)
-
-    await this.collection.updateOne({ _id: entity.id }, { $set: payload })
+  private async update (entity: TEntity): Promise<TEntity> {
+    const { _id, ...payload } = entity
+    await this.collection.updateOne({ _id }, { $set: payload })
 
     return entity
   }
 
   protected async create (entity: TEntity) {
-    const payload = this.serialize(entity)
-
-    await this.collection.insertOne(payload)
+    await this.collection.insertOne(entity)
 
     return entity
   }
@@ -52,11 +44,10 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
       return { total: 0, count: 0, results: [], range: { from: 0, to: 0 } }
     }
 
-    const results = await this.collection.find(query)
+    const results = await this.collection.find<TEntity>(query)
       .skip(from)
       .limit(size)
       .toArray()
-      .then((results: any) => results.map(this.deserialize))
 
     const to = from + results.length
 
@@ -90,7 +81,7 @@ export abstract class MongodbRepository<TEntity extends Entity, TSerializedEntit
   }
 
   public async save (entity: TEntity) {
-    if (await this.existsById(entity.id)) {
+    if (await this.existsById(entity._id)) {
       return this.update(entity)
     }
 
