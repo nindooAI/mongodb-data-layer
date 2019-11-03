@@ -1,6 +1,6 @@
 {
   "name": "@nindoo/mongodb-data-layer",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Simple set of tools to help working with mongodb",
   "main": "dist/index.js",
   "scripts": {
