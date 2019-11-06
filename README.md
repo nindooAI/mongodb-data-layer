@@ -12,11 +12,11 @@ This is a simple yet (hopefully) useful set of tools to aid working with mongodb
   - [MongodbRepository](#mongodbrepository)
     - [Instantiation](#instantiation)
     - [Protected methods](#protected-methods)
-      - [protected findOneBy(query: Record<string, any>): Promise<TEntity | null>](#protected-findonebyquery-recordstring-any-promisetentity--null)
-      - [protected unpaginatedSearch(query: Record<string, any>): Promise<TEntity[]>](#protected-unpaginatedsearchquery-recordstring-any-promisetentity)
-      - [protected existsBy(query: Record<string, any>): Promise<boolean>](#protected-existsbyquery-recordstring-any-promiseboolean)
-      - [protected runPaginatedQuery(query: Record<string, any>, page?: number, size?: number): Promise<PaginatedQueryResult<TEntity>>](#protected-runpaginatedqueryquery-recordstring-any-page-number-size-number-promisepaginatedqueryresulttentity)
-      - [protected deleteBy(query: any): Promise<boolean>](#protected-deletebyquery-any-promiseboolean)
+      - [findOneBy(query: Record<string, any>): Promise<TEntity | null>](#findonebyquery-recordstring-any-promisetentity--null)
+      - [unpaginatedSearch(query: Record<string, any>): Promise<TEntity[]>](#unpaginatedsearchquery-recordstring-any-promisetentity)
+      - [existsBy(query: Record<string, any>): Promise<boolean>](#existsbyquery-recordstring-any-promiseboolean)
+      - [runPaginatedQuery(query: Record<string, any>, page?: number, size?: number): Promise<PaginatedQueryResult<TEntity>>](#runpaginatedqueryquery-recordstring-any-page-number-size-number-promisepaginatedqueryresulttentity)
+      - [deleteBy(query: any): Promise<boolean>](#deletebyquery-any-promiseboolean)
     - [Public methods](#public-methods)
       - [deleteById(id: ObjectId | string): Promise<boolean | null>](#deletebyidid-objectid--string-promiseboolean--null)
       - [findById(id: ObjectId | string): Promise<TEntity | null>](#findbyidid-objectid--string-promisetentity--null)
@@ -124,21 +124,21 @@ export class ProfileRepository extends MongodbRepository<Profile> {
 
 These methods are available for your repository to use, but are generally too generic to be used outside the data layer (aka they require queries and database-only stuff)
 
-#### protected findOneBy(query: Record<string, any>): Promise<TEntity | null>
+#### findOneBy(query: Record<string, any>): Promise<TEntity | null>
 
 Receives a query object, runs it and resolves to its result
 
-#### protected unpaginatedSearch(query: Record<string, any>): Promise<TEntity[]>
+#### unpaginatedSearch(query: Record<string, any>): Promise<TEntity[]>
 
 Runs the given query and resolves to its results without applying pagination
 
-#### protected existsBy(query: Record<string, any>): Promise<boolean>
+#### existsBy(query: Record<string, any>): Promise<boolean>
 
 Runs the given query resolving to `true` if a result was found and to `false` otherwise.
 
 > This simply counts the amount of documents found by the query, without fetching any of them.
 
-#### protected runPaginatedQuery(query: Record<string, any>, page?: number, size?: number): Promise<PaginatedQueryResult<TEntity>>
+#### runPaginatedQuery(query: Record<string, any>, page?: number, size?: number): Promise<PaginatedQueryResult<TEntity>>
 
 Runs the given query and resolves to its results paginated.
 
@@ -156,7 +156,7 @@ interface PaginatedQueryResult<TEntity> {
 }
 ```
 
-#### protected deleteBy(query: any): Promise<boolean>
+#### deleteBy(query: any): Promise<boolean>
 
 Deletes any documents matched by the given query and resolves to a boolean indicating success
 
