@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/rjmunhoz/mongodb-data-layer.git"
+    "url": "git+ssh://git@github.com/nindooAI/mongodb-data-layer.git"
   },
   "keywords": [
     "mongodb",
@@ -22,14 +22,17 @@
   "author": "Rogério Munhoz <rogerio.j.munhoz@gmail.com>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/rjmunhoz/mongodb-data-layer/issues"
+    "url": "https://github.com/nindooAI/mongodb-data-layer/issues"
   },
-  "homepage": "https://github.com/rjmunhoz/mongodb-data-layer#readme",
+  "homepage": "https://github.com/nindooAI/mongodb-data-layer#readme",
   "dependencies": {
     "@types/mongodb": "^3.3.8",
     "mongodb": "^3.3.3"
   },
   "files": [
     "dist/"
-  ]
+  ],
+  "devDependencies": {
+    "typescript": "^3.7.2"
+  }
 }
